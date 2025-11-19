@@ -11,7 +11,14 @@ const stories = [
 
 export default function Stories() {
   return (
-    <section id="stories" className="py-20 bg-gradient-to-b from-slate-950 to-slate-900">
+    <motion.section
+      id="stories"
+      className="py-20 bg-gradient-to-b from-slate-950 to-slate-900"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.6 }}
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl sm:text-4xl font-bold text-white">Team & Player Storylines</h2>
         <p className="mt-2 text-slate-300">Stories to watch as the world converges.</p>
@@ -30,6 +37,6 @@ export default function Stories() {
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   )
 }

@@ -6,7 +6,9 @@ const sampleMatches = [
   { date: '2026-06-11', city: 'Mexico City', stage: 'Group', teams: ['Mexico', 'TBD'], time: '19:00', flags: ['🇲🇽', '🏳️']},
   { date: '2026-06-12', city: 'New York / New Jersey', stage: 'Group', teams: ['USA', 'TBD'], time: '18:00', flags: ['🇺🇸', '🏳️']},
   { date: '2026-06-13', city: 'Toronto', stage: 'Group', teams: ['Canada', 'TBD'], time: '17:00', flags: ['🇨🇦', '🏳️']},
-  { date: '2026-06-20', city: 'Los Angeles', stage: 'Group', teams: ['Brazil', 'TBD'], time: '20:00', flags: ['🇧🇷', '🏳️']},
+  { date: '2026-06-14', city: 'Los Angeles', stage: 'Group', teams: ['Brazil', 'TBD'], time: '20:00', flags: ['🇧🇷', '🏳️']},
+  { date: '2026-06-15', city: 'Miami', stage: 'Group', teams: ['Argentina', 'TBD'], time: '20:00', flags: ['🇦🇷', '🏳️']},
+  { date: '2026-06-20', city: 'Dallas', stage: 'Group', teams: ['England', 'TBD'], time: '20:00', flags: ['🏴', '🏳️']},
   { date: '2026-07-10', city: 'Dallas', stage: 'Quarter-final', teams: ['TBD', 'TBD'], time: '20:00', flags: ['🏳️', '🏳️']},
   { date: '2026-07-19', city: 'New York / New Jersey', stage: 'Final', teams: ['TBD', 'TBD'], time: '20:00', flags: ['🏳️', '🏳️']},
 ]
@@ -30,7 +32,14 @@ export default function MatchHub() {
   const stages = Array.from(new Set(sampleMatches.map(m => m.stage)))
 
   return (
-    <section id="matches" className="py-20 bg-gradient-to-b from-slate-950 to-slate-900">
+    <motion.section
+      id="matches"
+      className="py-20 bg-gradient-to-b from-slate-950 to-slate-900"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.6 }}
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-end justify-between gap-4 flex-wrap">
           <div>
@@ -80,6 +89,6 @@ export default function MatchHub() {
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   )
 }

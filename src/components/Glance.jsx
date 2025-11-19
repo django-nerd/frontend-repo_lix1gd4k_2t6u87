@@ -15,7 +15,14 @@ const stages = ['Group Stage','Round of 32','Round of 16','Quarter-finals','Semi
 
 export default function Glance() {
   return (
-    <section id="glance" className="relative py-20 bg-gradient-to-b from-slate-950 to-slate-900">
+    <motion.section
+      id="glance"
+      className="relative py-20 bg-gradient-to-b from-slate-950 to-slate-900"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.6 }}
+    >
       <div className="absolute inset-0 bg-[radial-gradient(1000px_400px_at_10%_0%,rgba(16,185,129,0.08),transparent),radial-gradient(800px_400px_at_100%_20%,rgba(56,189,248,0.07),transparent)]" />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl sm:text-4xl font-bold text-white">Tournament at a Glance</h2>
@@ -51,6 +58,6 @@ export default function Glance() {
           </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   )
 }

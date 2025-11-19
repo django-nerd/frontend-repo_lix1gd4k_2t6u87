@@ -51,8 +51,10 @@ export default function Hosts() {
 
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {cities[tab].map((c) => (
-            <motion.div key={c.city} whileHover={{ y: -6, rotateX: 2 }} className="group bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
-              <div className="h-32 bg-gradient-to-tr from-emerald-600/30 via-sky-600/30 to-rose-600/30"></div>
+            <motion.div key={c.city} whileHover={{ y: -6 }} className="group bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+              <div className="relative h-32 bg-gradient-to-tr from-emerald-600/30 via-sky-600/30 to-rose-600/30">
+                <span className="absolute right-3 top-3 inline-block w-2 h-2 rounded-full bg-emerald-400 group-hover:animate-ping" />
+              </div>
               <div className="p-5">
                 <div className="flex items-center justify-between">
                   <h3 className="text-white font-semibold text-lg">{c.city} <span className="ml-1">{c.flag}</span></h3>

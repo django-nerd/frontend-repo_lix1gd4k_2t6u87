@@ -1,8 +1,22 @@
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
+import { Building2, Plane, MapPinned } from 'lucide-react'
 
 const vibeOptions = ['Big City Energy','Beach & Fiesta','Nature & Skyline Mix']
 const allCities = ['New York / New Jersey','Los Angeles','Toronto','Vancouver','Mexico City','Guadalajara','Monterrey','Miami','Seattle','Dallas']
+
+const cityIcons = {
+  'New York / New Jersey': '🗽',
+  'Los Angeles': '🌴',
+  'Toronto': '🧊',
+  'Vancouver': '🌲',
+  'Mexico City': '🌮',
+  'Guadalajara': '🎺',
+  'Monterrey': '⛰️',
+  'Miami': '🌊',
+  'Seattle': '☕',
+  'Dallas': '🤠'
+}
 
 export default function TripPlanner() {
   const [vibe, setVibe] = useState(vibeOptions[0])
@@ -34,7 +48,14 @@ export default function TripPlanner() {
   }
 
   return (
-    <section id="trip" className="py-20 bg-gradient-to-b from-slate-900 to-slate-950">
+    <motion.section
+      id="trip"
+      className="py-20 bg-gradient-to-b from-slate-900 to-slate-950"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.6 }}
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl sm:text-4xl font-bold text-white">Build Your Dream Route</h2>
         <p className="mt-2 text-slate-300">Design a playful mini itinerary for your World Cup adventure.</p>
@@ -73,11 +94,12 @@ export default function TripPlanner() {
 
           {route && (
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-white/5 border border-white/10 rounded-2xl p-6">
-              <h4 className="text-white font-semibold">Recommended Route • {route.vibe} • {route.dates}</h4>
+              <h4 className="text-white font-semibold">Recommended Route</h4>
+              <p className="text-emerald-300 text-sm mt-1">Vibe: {route.vibe} • {route.dates}</p>
               <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {route.plan.map((p, idx) => (
                   <div key={idx} className="bg-white/5 border border-white/10 rounded-xl p-4">
-                    <div className="text-white font-bold text-lg">{idx+1}. {p.city}</div>
+                    <div className="text-white font-bold text-lg flex items-center gap-2">{idx+1}. <span className="text-base">{cityIcons[p.city] || '📍'}</span> {p.city}</div>
                     <div className="text-emerald-300 text-sm">{p.days} days</div>
                     <ul className="mt-2 list-disc list-inside text-slate-200 text-sm">
                       {p.tips.map((t,i)=>(<li key={i}>{t}</li>))}
@@ -89,6 +111,6 @@ export default function TripPlanner() {
           )}
         </div>
       </div>
-    </section>
+    </motion.section>
   )
 }

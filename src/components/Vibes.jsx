@@ -1,4 +1,5 @@
 import React from 'react'
+import { motion } from 'framer-motion'
 
 const panels = [
   { country: 'USA', intro: 'High-octane arenas, diverse mega-cities, and summer nights that buzz with sport and music.', items: ['NYC slice + skyline views','LA beaches + street art','Seattle coffee + supporters march','Miami nightlife + fan zones'] },
@@ -8,14 +9,21 @@ const panels = [
 
 export default function Vibes() {
   return (
-    <section id="vibes" className="py-20 bg-gradient-to-b from-slate-900 to-slate-950">
+    <motion.section
+      id="vibes"
+      className="py-20 bg-gradient-to-b from-slate-900 to-slate-950"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.6 }}
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl sm:text-4xl font-bold text-white">City Vibes & Fan Experience</h2>
         <p className="mt-2 text-slate-300">A lifestyle lens on the tournament.</p>
 
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
           {panels.map((p) => (
-            <div key={p.country} className="rounded-2xl border border-white/10 bg-white/5 p-6">
+            <motion.div key={p.country} whileHover={{ y: -4 }} className="rounded-2xl border border-white/10 bg-white/5 p-6">
               <div className="text-emerald-300 text-sm">{p.country}</div>
               <div className="text-white font-bold text-xl mt-1">What to expect</div>
               <p className="text-slate-200 mt-2 text-sm leading-relaxed">{p.intro}</p>
@@ -26,10 +34,10 @@ export default function Vibes() {
                   ))}
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   )
 }
