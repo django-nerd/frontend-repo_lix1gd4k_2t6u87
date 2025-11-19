@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Spline from '@splinetool/react-spline'
 import { motion } from 'framer-motion'
-import { VolumeX, Volume2, Sparkles, Football } from 'lucide-react'
+import { VolumeX, Volume2, Football } from 'lucide-react'
 
 function useCountdown(targetDate) {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
@@ -24,7 +23,30 @@ function useCountdown(targetDate) {
 export default function Hero() {
   const countdown = useCountdown('June 11, 2026 12:00:00')
   const [soundOn, setSoundOn] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  const [SplineComponent, setSplineComponent] = useState(null)
   const audioRef = useRef(null)
+
+  // Mark mounted to avoid SSR/window access issues
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Dynamically import Spline only in the browser; if it fails, we gracefully fall back to a gradient
+  useEffect(() => {
+    let cancelled = false
+    async function loadSpline() {
+      try {
+        if (typeof window === 'undefined') return
+        const mod = await import('@splinetool/react-spline')
+        if (!cancelled) setSplineComponent(() => mod.default)
+      } catch (e) {
+        // ignore and keep fallback background
+      }
+    }
+    loadSpline()
+    return () => { cancelled = true }
+  }, [])
 
   useEffect(() => {
     if (!audioRef.current) return
@@ -48,17 +70,17 @@ export default function Hero() {
   const stats = ['Days','Hours','Minutes','Seconds']
   const values = [countdown.days, countdown.hours, countdown.minutes, countdown.seconds]
 
-  const sparkle = {
-    hidden: { opacity: 0, scale: 0.7 },
-    show: { opacity: 1, scale: 1, transition: { duration: 0.3 } },
-  }
-
   const [confettiBurst, setConfettiBurst] = useState(0)
 
   return (
     <section id="hero" className="relative min-h-[100svh] w-full overflow-hidden">
+      {/* Background layer: try to render Spline when mounted; otherwise show a soft gradient */}
       <div className="absolute inset-0">
-        <Spline scene="https://prod.spline.design/cEecEwR6Ehj4iT8T/scene.splinecode" style={{ width: '100%', height: '100%' }} />
+        {mounted && SplineComponent ? (
+          <SplineComponent scene="https://prod.spline.design/cEecEwR6Ehj4iT8T/scene.splinecode" style={{ width: '100%', height: '100%' }} />
+        ) : (
+          <div className="w-full h-full bg-[radial-gradient(1000px_600px_at_50%_10%,rgba(16,185,129,0.15),transparent),radial-gradient(800px_500px_at_80%_20%,rgba(56,189,248,0.12),transparent)]" />
+        )}
       </div>
 
       <div className="absolute inset-0 bg-gradient-to-b from-slate-950/70 via-slate-950/50 to-slate-950/80" />
@@ -117,6 +139,7 @@ export default function Hero() {
         </button>
       </div>
 
+      {/* simple sparkles */}
       <motion.div
         key={confettiBurst}
         initial={{ opacity: 0 }}
@@ -124,7 +147,6 @@ export default function Hero() {
         transition={{ duration: 1.2 }}
         className="pointer-events-none absolute inset-0 z-10"
       >
-        {/* simple sparkles */}
         <div className="absolute inset-0 overflow-hidden">
           {Array.from({ length: 30 }).map((_, i) => (
             <motion.span
